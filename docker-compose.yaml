@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app:delegated
+      # Exclude the build directory
+      - /app/build
+    working_dir: /app
+    command: ['/app/your_program.sh']
