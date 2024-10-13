@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     tar \
     pkg-config \
     ninja-build \
+    netcat \
     && rm -rf /var/lib/apt/lists/*
 
 # Clone vcpkg

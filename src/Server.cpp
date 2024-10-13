@@ -6,6 +6,7 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <iomanip>
 #include <iostream>
 #include <string>
 
@@ -57,11 +58,48 @@ int main(int argc, char **argv) {
 
   std::cout << "Waiting for a client to connect...\n";
 
-  accept(server_fd, (struct sockaddr *)&client_addr,
-         (socklen_t *)&client_addr_len);
+  // Accept a client connection
+  int client_fd = accept(server_fd, (struct sockaddr *)&client_addr,
+                         (socklen_t *)&client_addr_len);
+  if (client_fd < 0) {
+    std::cerr << "Failed to accept client connection\n";
+    return 1;
+  }
+
   std::cout << "Client connected\n";
 
-  close(server_fd);
+  // Buffer to store received data
+  char buffer[1024];
 
-  return 0;
+  memset(buffer, 0, sizeof(buffer));  // zero out the buffer
+  // Receive data from the client
+  int bytes_received = recv(client_fd, buffer, sizeof(buffer) - 1, 0);
+  if (bytes_received < 0) {
+    std::cerr << "Failed to receive data from client\n";
+  } else {
+    std::cout << "Received from client: " << buffer << "\n";
+  }
+
+  // Check if the request is a PING command
+  std::string request(buffer, buffer + bytes_received);
+  const std::string ping_command = "*1\r\n$4\r\nPING\r\n";
+
+  // RESP encoded response "+PONG\r\n"
+  const char *response = "+PONG\r\n";
+
+  if (request == ping_command) {
+    // Send the response back to the client
+    int bytes_sent = send(client_fd, response, strlen(response), 0);
+    if (bytes_sent < 0) {
+      std::cerr << "Failed to send response to client\n";
+    } else {
+      std::cout << "Sent response to client: " << response << "\n";
+    }
+  } else {
+    std::cerr << "Received an unsupported command\n";
+  }
+
+  // Close client and server sockets
+  close(client_fd);
+  close(server_fd);
 }
