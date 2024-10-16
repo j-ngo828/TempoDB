@@ -1,3 +1,20 @@
+# TempoDB
+
+A Redis-like in-memory database with support for retrieving past values.
+
+## Why am I building this?
+
+I find Redis fascinating as it is a very simple yet robust database. I wish to learn more about the inner workings of a database and some networking concepts. I also want to build something with use cases in finance, hence I am building my own version of Redis with support for accessing past values.
+
+## Run the code
+
+Please pull this repo, ensure you have Docker installed and running. Then run `make`. For list of all useful Docker command for this repo, run `make help`.
+
+**Note: I am following guidance (structured specifications) from the Build Your Own Redis challenge. But all the code written beside the starter code (as well as config files) are my own code and thus my intellectual property**
+
+Below are from the starter `README.md` file
+
+
 [![progress-banner](https://backend.codecrafters.io/progress/redis/ae4c9940-13f1-416e-8adc-fff45cc4cbad)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
 
 This is a starting point for C++ solutions to the
